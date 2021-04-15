@@ -1,0 +1,109 @@
+[[providers]]
+name = "osm"
+type = "mvt_postgis"
+host = "${DB_HOST}"
+max_connections = 10
+port = "${DB_PORT}"
+database = "${DB_NAME}"
+user = "${DB_USER}"
+password = "${DB_PASSWORD}"
+
+#  [[providers.layers]]
+#  name = "landuse"
+#  geometry_fieldname = "geom"
+#  geometry_type = "polygon"
+#  id_fieldname = "osm_id"
+#  sql = "SELECT class, osm_id, way_area, z_order, ST_AsMVTGeom(geometry, !BBOX!) AS geom FROM layer_landuse(!BBOX!, !ZOOM!)"
+
+  [[providers.layers]]
+  name = "waterway"
+  geometry_fieldname = "geom"
+  geometry_type = "linestring"
+  id_fieldname = "osm_id"
+  sql = "SELECT class, osm_id, ST_AsMVTGeom(geometry, !BBOX!) AS geom FROM layer_waterway(!BBOX!, !ZOOM!)"
+
+ # [[providers.layers]]
+ # name = "water"
+ # geometry_type = "polygon"
+ # geometry_fieldname = "geom"
+ # sql = "SELECT osm_id, ST_AsBinary(way) AS geom FROM layer_water(!BBOX!, !ZOOM!)"
+
+  [[providers.layers]]
+  name = "aeroway"
+  geometry_type = "polygon"
+  geometry_fieldname = "geom"
+  id_fieldname = "osm_id"
+  sql = "SELECT osm_id, ST_AsMVTGeom(geometry, !BBOX!) AS geom, type FROM layer_aeroway(!BBOX!, !ZOOM!)"
+
+  [[providers.layers]]
+  name = "admin"
+  geometry_type = "linestring"
+  geometry_fieldname = "geom"
+  id_fieldname = "osm_id"
+  sql = "SELECT osm_id, ST_AsMVTGeom(geometry, !BBOX!) AS geom, admin_level, maritime, disputed FROM layer_admin(!BBOX!, !ZOOM!)"
+
+  [[providers.layers]]
+  name = "country_label"
+  geometry_type = "point"
+  geometry_fieldname = "geom"
+  id_fieldname = "osm_id"
+  sql = "SELECT osm_id, ST_AsMVTGeom(geometry, !BBOX!) AS geom, name, name_, scalerank, code FROM layer_country_labels(!BBOX!, !ZOOM!)"
+
+  [[providers.layers]]
+  name = "road_label"
+  geometry_type = "linestring"
+  geometry_fieldname = "geom"
+  id_fieldname = "osm_id"
+  sql = "SELECT osm_id, shield, ST_AsMVTGeom(geometry, !BBOX!) AS geom, name, name_, ref, reflen, len FROM layer_transportation_name(!BBOX!, !ZOOM!)"
+
+  [[providers.layers]]
+  name = "building"
+  geometry_type = "polygon"
+  geometry_fieldname = "geom"
+  id_fieldname = "osm_id"
+  sql = "SELECT osm_id, ST_AsMVTGeom(geometry, !BBOX!) AS geom FROM layer_buildings(!BBOX!, !ZOOM!)"
+
+[[maps]]
+name = "osm"
+attribution = 'Map data © <a href="http://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
+center = [ -0.2416797, 51.5287718, 14.0 ] # London, UK
+
+#  [[maps.layers]]
+#  provider_layer = "osm.landuse"
+#  min_zoom = 7
+#  max_zoom = 14
+
+  [[maps.layers]]
+  provider_layer = "osm.waterway"
+  min_zoom = 0
+  max_zoom = 14
+
+#  [[maps.layers]]
+#  provider_layer = "osm.water"
+#  min_zoom = 0
+#  max_zoom = 14
+
+  [[maps.layers]]
+  provider_layer = "osm.aeroway"
+  min_zoom = 0
+  max_zoom = 14
+
+  [[maps.layers]]
+  provider_layer = "osm.admin"
+  min_zoom = 0
+  max_zoom = 14
+
+  [[maps.layers]]
+  provider_layer = "osm.country_label"
+  min_zoom = 0
+  max_zoom = 14
+
+  [[maps.layers]]
+  provider_layer = "osm.road_label"
+  min_zoom = 0
+  max_zoom = 14
+
+  [[maps.layers]]
+  provider_layer = "osm.building"
+  min_zoom = 14
+  max_zoom = 14
