@@ -15,8 +15,7 @@ psl> CREATE EXTENSION hstore;
 
 The database also requires additional supporting functions:
 
-- `extract_names`: TBD, identify the location of this function.
-
+- `extract_names`
 
 ## OSM
 
