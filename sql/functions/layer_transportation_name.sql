@@ -15,8 +15,7 @@ AS $BODY$
           'default' AS shield, 
           way,
           name,
-          --(hstore_to_json(extract_names(tags)))::text name_,
-          '' AS name_,
+          (hstore_to_json(extract_names(tags)))::text name_,
           CASE
             WHEN highway IS NOT NULL THEN layer_transportation_name_to_class(highway)
             WHEN railway IS NOT NULL THEN layer_transportation_name_to_class(railway)
