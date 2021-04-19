@@ -11,8 +11,7 @@ AS $BODY$
     osm_id, 
     way, 
     name,
---    (hstore_to_json(extract_names(tags)))::text name_,
-    '' AS name_, 
+    (hstore_to_json(extract_names(tags)))::text name_,
     CASE
       WHEN to_int(population) >= 250000000 THEN 1
       WHEN to_int(population) BETWEEN 100000000 AND  250000000 THEN 2
