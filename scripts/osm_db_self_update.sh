@@ -6,13 +6,13 @@ if [[ ! -e .git ]]; then
     echo "No .git directory here, exiting" >&2;
     exit 1;
 fi
-s
+
 # be on master and get the updates
-git checkout master;
-git reset --hard origin/master
+git checkout main;
+git reset --hard origin/main
 git fetch origin;
 # inspect what has changed
-flist=$(git diff --name-only origin/master);
+flist=$(git diff --name-only origin/main);
 if [[ -z "${flist}" ]]; then
     # no changes, we are done
     exit 0;
