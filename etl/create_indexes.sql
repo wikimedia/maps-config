@@ -1,6 +1,6 @@
 BEGIN;
 
-	-- layer_admin 
+	-- layer_admin
 	CREATE INDEX ON admin (maritime);
 	CREATE INDEX ON admin (admin_level);
 
@@ -16,5 +16,5 @@ BEGIN;
 
 	-- layer_waterway
 	CREATE INDEX ON planet_osm_line (waterway);
-	CREATE INDEX ON planet_osm_polygon (natural);
+	CREATE INDEX ON planet_osm_polygon ("natural");
 COMMIT;
