@@ -21,7 +21,7 @@ fi
 git pull;
 
 # now, run SQL files
-for sql_file in ./sql/**/*.sql; do
+for sql_file in $(echo flist | grep ".sql"); do
     echo "executing: ${sql_file}"
     sudo -u postgres psql -Xd $DB_NAME -f "${sql_file}"
 done
