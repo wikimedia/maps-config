@@ -7,8 +7,8 @@ CREATE OR REPLACE FUNCTION public.layer_water(bbox geometry, zoom_level integer)
 
 AS $BODY$
   SELECT 
-    osm_id, 
-    way AS way
+    osm_id,
+    way
   FROM 
     planet_osm_polygon
   WHERE
@@ -26,11 +26,21 @@ AS $BODY$
     AND way && bbox
   UNION ALL
   SELECT 
-    0 AS osm_id, 
+    gid::bigint AS osm_id, 
     way
   FROM 
     water_polygons
   WHERE
-    way && bbox
+    zoom_level >= 10 AND zoom_level < 14
+    AND way && bbox
+  UNION ALL
+  SELECT 
+    gid::bigint AS osm_id, 
+    way
+  FROM 
+    simplified_water_polygons
+  WHERE
+    zoom_level < 10 
+    AND way && bbox
   ;
 $BODY$;
