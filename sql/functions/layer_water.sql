@@ -38,7 +38,7 @@ AS $BODY$
     gid::bigint AS osm_id, 
     way
   FROM 
-    simplified_water_polygons
+    water_polygons_simplified
   WHERE
     zoom_level < 10 
     AND way && bbox

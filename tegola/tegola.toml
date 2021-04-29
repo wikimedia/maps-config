@@ -86,10 +86,10 @@ name = "osm"
 attribution = 'Map data © <a href="http://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
 center = [ -0.2416797, 51.5287718, 14.0 ] # London, UK
 
-#  [[maps.layers]]
-#  provider_layer = "osm.landuse"
-#  min_zoom = 7
-#  max_zoom = 14
+  [[maps.layers]]
+  provider_layer = "osm.landuse"
+  min_zoom = 7
+  max_zoom = 14
 
   [[maps.layers]]
   provider_layer = "osm.waterway"
