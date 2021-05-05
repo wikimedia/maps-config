@@ -17,9 +17,10 @@ AS $BODY$
           name,
           (hstore_to_json(extract_names(tags)))::text name_,
           CASE
-            WHEN highway IS NOT NULL THEN layer_transportation_name_to_class(highway)
-            WHEN railway IS NOT NULL THEN layer_transportation_name_to_class(railway)
-            ELSE bail_out('Unexpected road row with osm_id=%s', osm_id::TEXT)
+            WHEN highway IS NOT NULL THEN layer_transportation_name_to_class(highway, osm_id)
+            WHEN railway IS NOT NULL THEN layer_transportation_name_to_class(railway, osm_id)
+            WHEN access IS NOT NULL THEN layer_transportation_name_to_class(access, osm_id)
+            ELSE bail_out('Unexpected layer_transportation_name road row with osm_id=%s', osm_id::TEXT)
           END AS class,
           z_order,
           CASE
@@ -66,8 +67,6 @@ AS $BODY$
                 AND zoom_level >= 14
               )
           )
-    --    AND 
-    --      linelabel(zoom_level, name, way)
           AND 
             way && bbox
       ) AS transportation

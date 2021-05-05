@@ -46,7 +46,7 @@ AS
           WHEN 'tunnel' THEN -100000
           WHEN 'road' THEN 0
           WHEN 'bridge' THEN 100000
-          ELSE bail_out('Unexpected value for is=%s', "is")::INT
+          ELSE bail_out('Unexpected layer_transportation_priority_score value for is=%s', "is")::INT
         END INTO feature_boost
       ;
 

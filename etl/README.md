@@ -15,8 +15,8 @@ psl> CREATE EXTENSION hstore;
 
 The database also requires additional supporting functions:
 
+- `labelgrid`: contained in the [postgis-vt-util](https://github.com/mapbox/postgis-vt-util) package.
 - `extract_names`: contained in the `./sql/helpers.sql` file.
-- `labelgrid`: This is contained in the [postgis-vt-util](https://github.com/mapbox/postgis-vt-util) package.
 - `bail`: an error reporting function contained in the `./sql/helpers.sql` file.
 - `to_int`: a type conversion function contained in the `./sql/helpers.sql` file.
 - `get_label_name`: contained in the `./sql/helpers.sql` file.

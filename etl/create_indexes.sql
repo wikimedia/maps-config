@@ -12,8 +12,10 @@ BEGIN;
 	CREATE INDEX ON planet_osm_point (place);
 	CREATE INDEX ON planet_osm_point (population);
 
-	-- layer_transportation_name
+	-- layer_transportation & layer_transportation_name
+	CREATE INDEX ON planet_osm_line(access);
 	CREATE INDEX ON planet_osm_line(highway);
+	CREATE INDEX ON planet_osm_line(railway);
 
 	-- layer_water
 	CREATE INDEX ON planet_osm_polygon (landuse);
