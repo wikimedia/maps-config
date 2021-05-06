@@ -37,7 +37,8 @@ $$ LANGUAGE plpgsql;
 CREATE OR REPLACE FUNCTION bail_out(msg TEXT, param1 TEXT DEFAULT '', param2 TEXT DEFAULT '', param3 TEXT DEFAULT '') RETURNS TEXT
 AS $$
 BEGIN
-    RAISE '%', pg_catalog.format(msg, param1, param2, param3);
+    RAISE NOTICE '%', pg_catalog.format(msg, param1, param2, param3);
+    RETURN '';
 END;
 $$ LANGUAGE plpgsql;
 

@@ -1,7 +1,7 @@
 /*
-  accepts a road name type value and maps the value to a class
+  accepts a transportation name type value and maps the value to a class
 */
-CREATE OR REPLACE FUNCTION public.layer_transportation_name_to_class(type text)
+CREATE OR REPLACE FUNCTION public.layer_transportation_name_to_class(type text, osm_id bigint)
   RETURNS text
 AS
   $$
@@ -19,7 +19,7 @@ AS
           WHEN type IN ('service', 'track') THEN 'service'
           WHEN type IN ('path', 'cycleway', 'ski', 'steps', 'bridleway', 'footway') THEN 'path'
           WHEN type IN ('funicular', 'light_rail', 'preserved') THEN 'minor_rail'
-          ELSE bail_out('Unexpected name type=%s', type::TEXT)
+          ELSE bail_out('Unexpected value for layer_transportation_name_to_class: type=%s osm_id=%s', type::TEXT, osm_id::TEXT)
         END INTO class_name
       ;
 

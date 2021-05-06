@@ -40,6 +40,13 @@ password = "${DB_PASSWORD}"
   sql = "SELECT osm_id, ST_AsMVTGeom(geometry, !BBOX!) AS geom, type FROM layer_aeroway(!BBOX!, !ZOOM!)"
 
   [[providers.layers]]
+  name = "road"
+  geometry_type = "linestring"
+  geometry_fieldname = "geom"
+  id_fieldname = "osm_id"
+  sql = "SELECT osm_id, ST_AsMVTGeom(geometry, !BBOX!) AS geom, class, z_order, 'is' FROM layer_transportation(!BBOX!, !ZOOM!)"
+
+  [[providers.layers]]
   name = "admin"
   geometry_type = "linestring"
   geometry_fieldname = "geom"
@@ -107,6 +114,11 @@ center = [ -0.2416797, 51.5287718, 14.0 ] # London, UK
   max_zoom = 14
 
   [[maps.layers]]
+  provider_layer = "osm.road"
+  min_zoom = 6
+  max_zoom = 14
+
+  [[maps.layers]]
   provider_layer = "osm.admin"
   min_zoom = 0
   max_zoom = 14
@@ -121,10 +133,10 @@ center = [ -0.2416797, 51.5287718, 14.0 ] # London, UK
   min_zoom = 14
   max_zoom = 14
 
-#  [[maps.layers]]
-#  provider_layer = "osm.road_label"
-#  min_zoom = 11
-#  max_zoom = 14
+  [[maps.layers]]
+  provider_layer = "osm.road_label"
+  min_zoom = 11
+  max_zoom = 14
 
  [[maps.layers]]
   provider_layer = "osm.place_label"
