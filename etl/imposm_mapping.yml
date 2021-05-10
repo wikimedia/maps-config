@@ -1,6 +1,6 @@
 areas:
   area_tags: [buildings, landuse, leisure, natural, aeroway, amenity]
-  linear_tags: [highway, barrier, boundary]
+  linear_tags: [highway, barrier]
 
 tags:
   load_all: true
@@ -267,26 +267,26 @@ tables:
         type: validated_geometry
     mapping:
       natural:
-      - wood
+        - wood
       leisure:
-      - national_reserve
-      - nature_reserve
-      - golf_course
-      - park
-      - playground
-      #aeroway:
+        - national_reserve
+        - nature_reserve
+        - golf_course
+        - park
+        - playground
+      aeroway: [__any__]
       landuse:
-      - wood
-      - forest
-      - cemetery
-      - industrial
-      - village_green
+        - wood
+        - forest
+        - cemetery
+        - industrial
+        - village_green
       amenity:
-      - school
-      - university
-      - hospital
+        - school
+        - university
+        - hospital
       boundary:
-      - national_park
+        - national_park
 
   planet_osm_line:
     type: linestring
