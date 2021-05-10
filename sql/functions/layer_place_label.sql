@@ -17,7 +17,7 @@ AS $BODY$
     localrank
   FROM(
   SELECT
-    DISTINCT ON (labelgrid(way, 16*pixel_width))
+    DISTINCT ON (labelgrid(way, 16, pixel_width))
       osm_id,
       way,
       get_label_name(name) AS name,
@@ -31,7 +31,7 @@ AS $BODY$
         WHEN place = 'village' THEN 1000000000 + to_int(population)
         ELSE to_int(population)
       END AS sort_order
-    FROM 
+    FROM
       planet_osm_point
     WHERE
       (
@@ -57,12 +57,12 @@ AS $BODY$
           AND zoom_level >= 13
         )
       )
-      AND 
+      AND
         (name IS NOT NULL AND name <> '')
-      AND 
+      AND
         way && bbox --ST_Expand(!BBOX!, 64*pixel_width)
     ORDER BY
-      labelgrid(way, 16*pixel_width),
+      labelgrid(way, 16, pixel_width),
       sort_order DESC,
       pg_catalog.length(name) DESC,
       name

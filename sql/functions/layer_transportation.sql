@@ -1,27 +1,22 @@
 CREATE OR REPLACE FUNCTION public.layer_transportation(bbox geometry, zoom_level integer)
-    RETURNS TABLE(osm_id bigint, geometry geometry, class text, z_order integer, is text) 
+    RETURNS TABLE(osm_id bigint, geometry geometry, class text, z_order integer, is text)
     LANGUAGE 'sql'
     COST 100
     IMMUTABLE PARALLEL UNSAFE
     ROWS 1000
 
 AS $BODY$
-  SELECT 
-    osm_id, 
-    way, 
+  SELECT
+    osm_id,
+    way,
     class,
-    z_order, 
-    "is" 
+    z_order,
+    "is"
   FROM (
     SELECT
         osm_id,
         way,
-        CASE
-          WHEN highway IS NOT NULL THEN layer_transportation_name_to_class(highway, osm_id)
-          WHEN railway IS NOT NULL THEN layer_transportation_name_to_class(railway, osm_id)
-          WHEN access IS NOT NULL THEN layer_transportation_name_to_class(access, osm_id)
-          ELSE bail_out('Unexpected layer_transportation road row with osm_id=%s', osm_id::TEXT)
-        END AS class,
+        layer_transportation_name_to_class(highway, railway, access, osm_id) AS class,
         z_order,
         CASE
           -- maybe handle all these cases at the data import?
@@ -29,7 +24,7 @@ AS $BODY$
           WHEN tunnel IS NOT NULL AND tunnel <> '' AND tunnel <> 'no' AND tunnel <> '0' THEN 'tunnel'
           ELSE 'road'
         END AS "is"
-      FROM 
+      FROM
         planet_osm_line
       WHERE
         (

@@ -1,6 +1,10 @@
 [observer]
 type = "prometheus"
 
+[cache]
+type = "file"
+basepath = "/etc/operations-software-tegola/cache"
+
 [[providers]]
 name = "osm"
 type = "mvt_postgis"
@@ -44,7 +48,7 @@ password = "${DB_PASSWORD}"
   geometry_type = "linestring"
   geometry_fieldname = "geom"
   id_fieldname = "osm_id"
-  sql = "SELECT osm_id, ST_AsMVTGeom(geometry, !BBOX!) AS geom, class, z_order, 'is' FROM layer_transportation(!BBOX!, !ZOOM!)"
+  sql = "SELECT osm_id, ST_AsMVTGeom(geometry, !BBOX!) AS geom, class, z_order, \"is\" FROM layer_transportation(!BBOX!, !ZOOM!)"
 
   [[providers.layers]]
   name = "admin"
@@ -79,7 +83,7 @@ password = "${DB_PASSWORD}"
   geometry_type = "point"
   geometry_fieldname = "geom"
   id_fieldname = "osm_id"
-  sql = "SELECT osm_id, ST_AsMVTGeom(geometry, !BBOX!) AS geom, ldir, localrank, name, osm_id, type FROM layer_place_label(!BBOX!, !ZOOM!, !PIXEL_WIDTH!)"
+  sql = "SELECT osm_id, ST_AsMVTGeom(geometry, !BBOX!) AS geom, ldir, localrank, name, type FROM layer_place_label(!BBOX!, !ZOOM!, !PIXEL_WIDTH!)"
 
   [[providers.layers]]
   name = "building"
@@ -96,32 +100,37 @@ center = [ -0.2416797, 51.5287718, 14.0 ] # London, UK
   [[maps.layers]]
   provider_layer = "osm.landuse"
   min_zoom = 7
-  max_zoom = 14
+  max_zoom = 15
 
   [[maps.layers]]
   provider_layer = "osm.waterway"
   min_zoom = 8
-  max_zoom = 14
+  max_zoom = 15
 
   [[maps.layers]]
   provider_layer = "osm.water"
   min_zoom = 0
-  max_zoom = 14
+  max_zoom = 15
 
   [[maps.layers]]
   provider_layer = "osm.aeroway"
   min_zoom = 12
-  max_zoom = 14
+  max_zoom = 15
+
+  [[maps.layers]]
+  provider_layer = "osm.building"
+  min_zoom = 14
+  max_zoom = 15
 
   [[maps.layers]]
   provider_layer = "osm.road"
   min_zoom = 6
-  max_zoom = 14
+  max_zoom = 15
 
   [[maps.layers]]
   provider_layer = "osm.admin"
   min_zoom = 0
-  max_zoom = 14
+  max_zoom = 15
 
   [[maps.layers]]
   provider_layer = "osm.country_label"
@@ -129,21 +138,16 @@ center = [ -0.2416797, 51.5287718, 14.0 ] # London, UK
   max_zoom = 10
 
   [[maps.layers]]
+  provider_layer = "osm.place_label"
+  min_zoom = 3
+  max_zoom = 15
+
+  [[maps.layers]]
   provider_layer = "osm.poi_label"
   min_zoom = 14
-  max_zoom = 14
+  max_zoom = 15
 
   [[maps.layers]]
   provider_layer = "osm.road_label"
   min_zoom = 11
-  max_zoom = 14
-
- [[maps.layers]]
-  provider_layer = "osm.place_label"
-  min_zoom = 3
-  max_zoom = 14
-
-  [[maps.layers]]
-  provider_layer = "osm.building"
-  min_zoom = 14
-  max_zoom = 14
+  max_zoom = 15

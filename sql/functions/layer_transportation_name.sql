@@ -1,27 +1,22 @@
 CREATE OR REPLACE FUNCTION public.layer_transportation_name(bbox geometry, zoom_level integer)
-    RETURNS TABLE(osm_id bigint, shield text, geometry geometry, name text, name_ text, class text, z_order integer, is text, ref text, reflen integer, len numeric) 
+    RETURNS TABLE(osm_id bigint, shield text, geometry geometry, name text, name_ text, class text, z_order integer, is text, ref text, reflen integer, len numeric)
     LANGUAGE 'sql'
     COST 100
     IMMUTABLE PARALLEL UNSAFE
     ROWS 1000
 
 AS $BODY$
-  SELECT 
-    * 
+  SELECT
+    *
   FROM
     (
       SELECT
           osm_id,
-          'default' AS shield, 
+          'default' AS shield,
           way,
           name,
           (hstore_to_json(extract_names(tags)))::text name_,
-          CASE
-            WHEN highway IS NOT NULL THEN layer_transportation_name_to_class(highway, osm_id)
-            WHEN railway IS NOT NULL THEN layer_transportation_name_to_class(railway, osm_id)
-            WHEN access IS NOT NULL THEN layer_transportation_name_to_class(access, osm_id)
-            ELSE bail_out('Unexpected layer_transportation_name road row with osm_id=%s', osm_id::TEXT)
-          END AS class,
+          layer_transportation_name_to_class(highway, railway, access, osm_id) AS class,
           z_order,
           CASE
             -- maybe handle all these cases at the data import?
@@ -31,8 +26,8 @@ AS $BODY$
           END AS "is",
           ref,
           pg_catalog.char_length(ref) AS reflen,
-          ROUND(MercLength(way)) AS len
-        FROM 
+          ROUND(Merc_Length(way)) AS len
+        FROM
           planet_osm_line AS osm_line
         WHERE
           (
@@ -67,7 +62,7 @@ AS $BODY$
                 AND zoom_level >= 14
               )
           )
-          AND 
+          AND
             way && bbox
       ) AS transportation
     ORDER BY

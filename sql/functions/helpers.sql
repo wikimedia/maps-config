@@ -30,7 +30,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 --
--- Raise an error in contexts where a return is expected
+-- Raise a notice in contexts where a return is expected
 -- msg is a format string with param1..3 as optional parameters
 -- See http://www.postgresql.org/docs/9.4/static/functions-string.html#FUNCTIONS-STRING-FORMAT for details
 --
