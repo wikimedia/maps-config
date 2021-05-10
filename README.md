@@ -8,7 +8,7 @@ This repository maintains instructions and configuration files necessary for run
 - [PostGIS 3.1](https://postgis.net/)
 - [tegola v0.14.0+](https://github.com/go-spatial/tegola/releases)
 
-## Repository layouot
+## Repository layuot
 
 * [tegola/](tegola/): contains the tegola config file and associated instructions.
 * [sql/](sql/): The primay SQL functions that must be installed in the database. These functions are used by tegola for fetching geometries from Postgres.
