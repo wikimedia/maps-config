@@ -73,7 +73,7 @@ tables:
         name: tags
         type: hstore_tags
       - name: way
-        type: validated_geometry
+        type: geometry
 
   planet_osm_polygon:
     type: polygon
@@ -299,7 +299,7 @@ tables:
         name: tags
         type: hstore_tags
       - name: way
-        type: validated_geometry
+        type: geometry
       - key: aeroway
         name: aeroway
         type: string
@@ -342,7 +342,7 @@ tables:
         type: id
         from_member: true
       - name: way
-        type: validated_geometry
+        type: geometry
       - key: name
         name: name
         type: string
