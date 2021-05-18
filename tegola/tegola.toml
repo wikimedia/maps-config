@@ -124,7 +124,7 @@ center = [ -0.2416797, 51.5287718, 14.0 ] # London, UK
 
   [[maps.layers]]
   provider_layer = "osm.road"
-  min_zoom = 6
+  min_zoom = 5
   max_zoom = 15
 
   [[maps.layers]]
