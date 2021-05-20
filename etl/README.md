@@ -1,4 +1,4 @@
-# etl
+# Extract Transform and Load (ETL)
 
 This folder will contain instructions on the map data Extract Transform and Load steps.
 
@@ -22,7 +22,7 @@ The database also requires additional supporting functions:
 - `to_int`: a type conversion function contained in the `./sql/functions/helpers.sql` file.
 - `get_label_name`: contained in the `./sql/functions/helpers.sql` file.
 
-## OSM
+## Import OSM data
 
 The initial OSM import process has several steps:
 
@@ -59,7 +59,7 @@ $ imposm import -config config.europe.json -overwritecache -read europe-latest.o
 
 This process is long, so after you start the job make sure to have a nice movie queued up to pass the time.
 
-## OSM water
+## Import OSM water
 
 The OSM water layer is maintained by https://osmdata.openstreetmap.de. The layer is derived from OSM data and is pre-split to aid with tile generation. Note that when using pre-split data polygons will overlap at the split seams. This is to avoid rendering artifacts but also makes using opacity in styling less desirable as the seams will show.
 
@@ -84,6 +84,22 @@ $ curl -O https://osmdata.openstreetmap.de/download/simplified-water-polygons-sp
 $ unzip simplified-water-polygons-split-3857.zip
 $ shp2pgsql -I -c -s 3857 -g way simplified-water-polygons-split-3857/simplified_water_polygons.shp water_polygons_simplified | psql -h ${PGHOST} -U ${PGUSER} -d ${PGDATABASE}
 ```
+
+## Create transportation generalized tables
+
+The `planet_osm_merge_line_transportation_gen.sql` script needs to be run after the imposm import. This script will create materialized views for the transportation layers at various zooms implementing several optimizations including:
+
+* Merging features of like type together to create longer lines. This is necessary to make simplification effective.
+* Applying simplification to features with the tolerances based on the target zoom level. This reduces the fidelity of the feature on lower zooms, reducing the number of feature vertices with minimal visual difference.
+* Filtering out short features. This is important at the lower zooms where short features are not visually present but would still be encoded and bloat the tile size unnecessarily.
+
+To update the the transportation materialized views, the following SQL needs to be run:
+
+```sql
+SELECT refresh_planet_osm_merge_line_transportation_gen();
+```
+
+This call will cause all the materialized views to update CONCURRENTLY. The concurrently detail is key as it allows the view to be updated without blocking reads.
 
 ## Create additional indexes
 
