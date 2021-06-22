@@ -5,7 +5,7 @@ BEGIN;
 	CREATE INDEX ON admin (admin_level);
 
 	-- layer_landuse (need to add generalized tables as well)
-	--CREATE INDEX ON planet_osm_polygon_landuse(landuse)
+	CREATE INDEX ON planet_osm_polygon_landuse(landuse);
 
 	-- layer_place_label
 	CREATE INDEX ON planet_osm_point (name);
