@@ -137,7 +137,7 @@ AS $BODY$
         ELSE 'road'
       END AS "is"
     FROM 
-      planet_osm_merge_line_transportation_gen_z12
+      planet_osm_line
     WHERE 
       zoom_level = 12
     UNION ALL
@@ -153,7 +153,7 @@ AS $BODY$
         ELSE 'road'
       END AS "is"
     FROM 
-      planet_osm_merge_line_transportation_gen_z13
+      planet_osm_line
     WHERE 
       zoom_level = 13
     UNION ALL
@@ -169,7 +169,7 @@ AS $BODY$
         ELSE 'road'
       END AS "is"
     FROM 
-      planet_osm_merge_line_transportation_gen_z14
+      planet_osm_line
     WHERE 
       zoom_level >= 14
   ) AS layer_data
