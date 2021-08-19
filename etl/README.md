@@ -4,23 +4,23 @@ This folder will contain instructions on the map data Extract Transform and Load
 
 ## Database setup
 
-All data will be stored in a single database named `osm`. Connect to the database then run the following commands:
+All data will be stored in a single database named `gis`. Connect to the database then run the following commands:
 
 ```console
-psl> CREATE DATABASE osm;
-psl> \c osm
+psl> CREATE DATABASE gis;
+psl> \c gis
 psl> CREATE EXTENSION postgis;
 psl> CREATE EXTENSION hstore;
 ```
 
 The database also requires additional supporting functions:
 
-- `labelgrid`: contained in the [@kartotherian/postgis-vt-util:v0.3.1](https://github.com/kartotherian/postgis-vt-util/tree/v0.3.1) package but also included in the `./sql/functions/postgis_vt_util.sql` file.
-- `merc_length`: contained in the [@kartoherian/postgis-vt-util:v0.3.1](https://github.com/kartotherian/postgis-vt-util/tree/v0.3.1) package but also included in the `./sql/functions/postgis_vt_util.sql` file.
-- `extract_names`: contained in the `./sql/functions/helpers.sql` file.
-- `bail`: an error reporting function contained in the `./sql/functions/helpers.sql` file.
-- `to_int`: a type conversion function contained in the `./sql/functions/helpers.sql` file.
-- `get_label_name`: contained in the `./sql/functions/helpers.sql` file.
+- `labelgrid`: contained in the [@kartotherian/postgis-vt-util:v0.3.1](https://github.com/kartotherian/postgis-vt-util/tree/v0.3.1) package but also included in the `./osm-bright.tm2source/node_modules/@kartotherian/postgis_vt_util.sql` file.
+- `merc_length`: contained in the [@kartoherian/postgis-vt-util:v0.3.1](https://github.com/kartotherian/postgis-vt-util/tree/v0.3.1) package but also included in the `./osm-bright.tm2source/node_modules/@kartotherian/postgis_vt_util.sql` file.
+- `extract_names`: contained in the `./osm-bright.tm2source/sql/helpers/names.sql` file.
+- `bail`: an error reporting function contained in the `./osm-bright.tm2source/sql/helpers/functions.sql` file.
+- `to_int`: a type conversion function contained in the `./osm-bright.tm2source/sql/helpers/functions.sql` file.
+- `get_label_name`: contained in the `./osm-bright.tm2source/sql/helpers/functions.sql` file.
 
 ## Import OSM data
 
@@ -33,11 +33,11 @@ Imposm3 uses a config file in the following format:
 
 ```json
 {
-    "cachedir": "/root/kartosm/cache",
-    "diffdir": "/root/kartosm/diff",
-    "expiretiles_dir": "/root/kartosm/expiretiles",
+    "cachedir": "/srv/imposm/cache",
+    "diffdir": "/srv/imposm/diff",
+    "expiretiles_dir": "/srv/imposm/expiretiles",
     "expiretiles_zoom": 15,
-    "connection": "postgis: user=user password=password dbname=osm host=host prefix=NONE",
+    "connection": "postgis: user=user password=password dbname=gis host=host prefix=NONE",
     "mapping": "/root/wiki-repos/kartodock/workspace/mapping.yml",
     "replication_url": "https://planet.openstreetmap.org/replication/minute/"
 }
@@ -87,6 +87,8 @@ $ shp2pgsql -I -c -s 3857 -g way simplified-water-polygons-split-3857/simplified
 
 ## Create transportation generalized tables
 
+ATTENTION: this code was moved to osm-bright.tm2source but it's not present in the current main code, please refer to it when the [PR is merged](https://github.com/kartotherian/osm-bright.tm2source/pull/74). 
+
 The `planet_osm_merge_line_transportation_gen.sql` script needs to be run after the imposm import. This script will create materialized views for the transportation layers at various zooms implementing several optimizations including:
 
 * Merging features of like type together to create longer lines. This is necessary to make simplification effective.
@@ -103,4 +105,4 @@ This call will cause all the materialized views to update CONCURRENTLY. The conc
 
 ## Create additional indexes
 
-Once the aforementioned steps are run the `create_indexes.sql` file should be run to build up additional indexes necessary for performance.
+Once the aforementioned steps are run the `./osm-bright.tm2source/sql/helpers/create_indexes.sql` file should be run to build up additional indexes necessary for performance.

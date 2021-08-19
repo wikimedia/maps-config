@@ -1,0 +1,3 @@
+[submodule "osm-bright.tm2source"]
+	path = osm-bright.tm2source
+	url = https://github.com/kartotherian/osm-bright.tm2source.git
