@@ -48,13 +48,14 @@ password = "${DB_PASSWORD}"
   geometry_type = "linestring"
   geometry_fieldname = "geom"
   id_fieldname = "osm_id"
-  sql = "SELECT osm_id, ST_AsMVTGeom(geometry, !BBOX!) AS geom, class, z_order, \"is\" FROM layer_transportation(!BBOX!, !ZOOM!)"
+  sql = "SELECT osm_id, ST_AsMVTGeom(geometry, !BBOX!) AS geom, class, z_order, 'is' FROM layer_transportation(!BBOX!, !ZOOM!)"
 
   [[providers.layers]]
   name = "admin"
   geometry_type = "linestring"
   geometry_fieldname = "geom"
   id_fieldname = "osm_id"
+  fields = [ "admin_level", "disputed", "maritime", "osm_id" ]
   sql = "SELECT osm_id, ST_AsMVTGeom(geometry, !BBOX!) AS geom, admin_level, maritime, disputed FROM layer_admin(!BBOX!, !ZOOM!)"
 
   [[providers.layers]]
@@ -62,7 +63,7 @@ password = "${DB_PASSWORD}"
   geometry_type = "point"
   geometry_fieldname = "geom"
   id_fieldname = "osm_id"
-  sql = "SELECT osm_id, ST_AsMVTGeom(geometry, !BBOX!) AS geom, name, name_, scalerank, code FROM layer_country_labels(!BBOX!, !ZOOM!)"
+  sql = "SELECT osm_id, ST_AsMVTGeom(geometry, !BBOX!, 4096, 1024) AS geom, name, name_, scalerank, code FROM layer_country_label(!BBOX!, !ZOOM!, !PIXEL_WIDTH!)"
 
   [[providers.layers]]
   name = "poi_label"
@@ -83,19 +84,20 @@ password = "${DB_PASSWORD}"
   geometry_type = "point"
   geometry_fieldname = "geom"
   id_fieldname = "osm_id"
-  sql = "SELECT osm_id, ST_AsMVTGeom(geometry, !BBOX!) AS geom, ldir, localrank, name, type FROM layer_place_label(!BBOX!, !ZOOM!, !PIXEL_WIDTH!)"
+  sql = "SELECT osm_id, ST_AsMVTGeom(geometry, !BBOX!) AS geom, ldir, localrank, name, osm_id, type FROM layer_place_label(!BBOX!, !ZOOM!, !PIXEL_WIDTH!)"
 
   [[providers.layers]]
   name = "building"
   geometry_type = "polygon"
   geometry_fieldname = "geom"
   id_fieldname = "osm_id"
-  sql = "SELECT osm_id, ST_AsMVTGeom(geometry, !BBOX!) AS geom FROM layer_buildings(!BBOX!, !ZOOM!)"
+  sql = "SELECT osm_id, ST_AsMVTGeom(geometry, !BBOX!) AS geom FROM layer_building(!BBOX!, !ZOOM!)"
 
 [[maps]]
 name = "osm"
 attribution = 'Map data © <a href="http://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
-center = [ -0.2416797, 51.5287718, 14.0 ] # London, UK
+center = [ -122.4144, 37.7907, 14.0 ]
+tile_buffer = 8
 
   [[maps.layers]]
   provider_layer = "osm.landuse"
@@ -118,13 +120,8 @@ center = [ -0.2416797, 51.5287718, 14.0 ] # London, UK
   max_zoom = 15
 
   [[maps.layers]]
-  provider_layer = "osm.building"
-  min_zoom = 14
-  max_zoom = 15
-
-  [[maps.layers]]
   provider_layer = "osm.road"
-  min_zoom = 5
+  min_zoom = 6
   max_zoom = 15
 
   [[maps.layers]]
@@ -138,11 +135,6 @@ center = [ -0.2416797, 51.5287718, 14.0 ] # London, UK
   max_zoom = 10
 
   [[maps.layers]]
-  provider_layer = "osm.place_label"
-  min_zoom = 3
-  max_zoom = 15
-
-  [[maps.layers]]
   provider_layer = "osm.poi_label"
   min_zoom = 14
   max_zoom = 15
@@ -150,4 +142,14 @@ center = [ -0.2416797, 51.5287718, 14.0 ] # London, UK
   [[maps.layers]]
   provider_layer = "osm.road_label"
   min_zoom = 11
+  max_zoom = 15
+
+  [[maps.layers]]
+  provider_layer = "osm.place_label"
+  min_zoom = 3
+  max_zoom = 15
+
+  [[maps.layers]]
+  provider_layer = "osm.building"
+  min_zoom = 14
   max_zoom = 15
